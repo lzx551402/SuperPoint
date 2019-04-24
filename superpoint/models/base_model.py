@@ -6,7 +6,7 @@ from tqdm import tqdm
 import os.path as osp
 import itertools
 
-from superpoint.utils.tools import dict_update
+from utils.tools import dict_update
 
 
 class Mode:

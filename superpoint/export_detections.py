@@ -6,7 +6,7 @@ from pathlib import Path
 from tqdm import tqdm
 
 import experiment
-from superpoint.settings import EXPER_PATH
+from settings import DATA_PATH, EXPER_PATH
 
 if __name__ == '__main__':
 
@@ -25,9 +25,7 @@ if __name__ == '__main__':
         config = yaml.load(f)
     assert 'eval_iter' in config
 
-    output_dir = Path(EXPER_PATH, 'outputs/{}/'.format(export_name))
-    if not output_dir.exists():
-        os.makedirs(output_dir)
+    output_dir = Path(DATA_PATH, 'gl3d', 'data')
     checkpoint = Path(EXPER_PATH, experiment_name)
     if 'checkpoint' in config:
         checkpoint = Path(checkpoint, config['checkpoint'])
@@ -70,7 +68,8 @@ if __name__ == '__main__':
                 if not ('name' in d):
                     p.update(d)  # Can't get the data back from the filename --> dump
                 filename = d['name'].decode('utf-8') if 'name' in d else str(i)
-                filepath = Path(output_dir, '{}.npz'.format(filename))
+                projname = d['proj'].decode('utf-8') if 'proj' in d else str(i)
+                filepath = Path(output_dir, projname, 'sp_kpt', '{}.npz'.format(filename))
                 np.savez_compressed(filepath, **p)
                 i += 1
                 pbar.update(1)

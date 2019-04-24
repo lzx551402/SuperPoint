@@ -1,7 +1,7 @@
 from abc import ABCMeta, abstractmethod
 import tensorflow as tf
 
-from superpoint.utils.tools import dict_update
+from utils.tools import dict_update
 
 
 class BaseDataset(metaclass=ABCMeta):

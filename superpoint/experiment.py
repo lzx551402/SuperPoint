@@ -6,10 +6,10 @@ import numpy as np
 from contextlib import contextmanager
 from json import dumps as pprint
 
-from superpoint.datasets import get_dataset
-from superpoint.models import get_model
-from superpoint.utils.stdout_capturing import capture_outputs
-from superpoint.settings import EXPER_PATH
+from datasets import get_dataset
+from models import get_model
+from utils.stdout_capturing import capture_outputs
+from settings import EXPER_PATH
 
 logging.basicConfig(format='[%(asctime)s %(levelname)s] %(message)s',
                     datefmt='%m/%d/%Y %H:%M:%S', level=logging.INFO)

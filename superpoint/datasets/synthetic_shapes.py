@@ -8,10 +8,10 @@ from tqdm import tqdm
 import shutil
 
 from .base_dataset import BaseDataset
-from superpoint.datasets import synthetic_dataset
+from datasets import synthetic_dataset
 from .utils import pipeline
 from .utils.pipeline import parse_primitives
-from superpoint.settings import DATA_PATH
+from settings import DATA_PATH
 
 
 class SyntheticShapes(BaseDataset):

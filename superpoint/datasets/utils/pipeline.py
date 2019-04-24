@@ -2,8 +2,8 @@ import tensorflow as tf
 import cv2 as cv
 import numpy as np
 
-from superpoint.datasets.utils import photometric_augmentation as photaug
-from superpoint.models.homographies import (sample_homography, compute_valid_mask,
+from datasets.utils import photometric_augmentation as photaug
+from models.homographies import (sample_homography, compute_valid_mask,
                                             warp_points, filter_points)
 
 
