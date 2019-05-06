@@ -2,7 +2,7 @@ import numpy as np
 from os import path as osp
 from glob import glob
 
-from superpoint.settings import EXPER_PATH
+from settings import EXPER_PATH
 
 
 def get_paths(exper_name):

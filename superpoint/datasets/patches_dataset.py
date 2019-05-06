@@ -5,8 +5,8 @@ from pathlib import Path
 
 from .base_dataset import BaseDataset
 from .utils import pipeline
-from superpoint.models.homographies import sample_homography
-from superpoint.settings import DATA_PATH
+from models.homographies import sample_homography
+from settings import DATA_PATH
 
 
 class PatchesDataset(BaseDataset):

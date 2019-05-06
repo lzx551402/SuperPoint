@@ -7,14 +7,13 @@ from .utils import pipeline
 from settings import DATA_PATH, EXPER_PATH
 
 
-class Coco(BaseDataset):
+class Gl3d(BaseDataset):
     default_config = {
         'labels': None,
         'cache_in_memory': False,
         'validation_size': 100,
         'truncate': None,
         'preprocessing': {
-            'resize': [240, 320]
         },
         'num_parallel_calls': 10,
         'augmentation': {
@@ -38,13 +37,14 @@ class Coco(BaseDataset):
     }
 
     def _init_dataset(self, **config):
-        base_path = Path(DATA_PATH, 'COCO/train2014/')
-        image_paths = list(base_path.iterdir())
-        if config['truncate']:
-            image_paths = image_paths[:config['truncate']]
+        base_path = Path(DATA_PATH, 'gl3d/')
+        image_list = Path(base_path, 'list', 'comb', 'image_list.txt')
+        image_paths = open(image_list).read().splitlines()
+        proj_paths = [i.split('/')[1] for i in image_paths]
+        image_paths = [Path(base_path, i) for i in image_paths]
         names = [p.stem for p in image_paths]
         image_paths = [str(p) for p in image_paths]
-        files = {'image_paths': image_paths, 'names': names}
+        files = {'image_paths': image_paths, 'names': names, 'proj_paths': proj_paths}
 
         if config['labels']:
             label_paths = []
@@ -70,7 +70,7 @@ class Coco(BaseDataset):
 
         def _preprocess(image):
             image = tf.image.rgb_to_grayscale(image)
-            if config['preprocessing']['resize']:
+            if 'resize' in config['preprocessing']:
                 image = pipeline.ratio_preserving_resize(image,
                                                          **config['preprocessing'])
             return image
@@ -81,9 +81,10 @@ class Coco(BaseDataset):
 
         names = tf.data.Dataset.from_tensor_slices(files['names'])
         images = tf.data.Dataset.from_tensor_slices(files['image_paths'])
+        projs = tf.data.Dataset.from_tensor_slices(files['proj_paths'])
         images = images.map(_read_image)
         images = images.map(_preprocess)
-        data = tf.data.Dataset.zip({'image': images, 'name': names})
+        data = tf.data.Dataset.zip({'image': images, 'name': names, 'proj': projs})
 
         # Add keypoints
         if has_keypoints:
